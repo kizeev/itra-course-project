@@ -30,16 +30,22 @@
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            <span class="position end-0 mb-2">
-                <a class="nav-link active" href="#">Log In</a>
-            </span>
-            <span>
-                <a class="nav-link active " href="#">Sign In</a>
-            </span>
+
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            {% else %}
+                <ul class="navbar-nav mb-2 mb-lg-0 d-flex justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">Register</a>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     </div>
 </nav>
