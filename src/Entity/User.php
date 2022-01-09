@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $name;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserCollection::class, orphanRemoval: true)]
+    private $userCollections;
+
+    public function __construct()
+    {
+        $this->userCollections = new ArrayCollection();
+    }
+
+    /**
+     * @see UserInterface
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -124,5 +137,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword($plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return Collection|UserCollection[]
+     */
+    public function getUserCollections(): Collection
+    {
+        return $this->userCollections;
+    }
+
+    public function addUserCollection(UserCollection $userCollection): self
+    {
+        if (!$this->userCollections->contains($userCollection)) {
+            $this->userCollections[] = $userCollection;
+            $userCollection->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCollection(UserCollection $userCollection): self
+    {
+        if ($this->userCollections->removeElement($userCollection)) {
+            // set the owning side to null (unless already changed)
+            if ($userCollection->getUser() === $this) {
+                $userCollection->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

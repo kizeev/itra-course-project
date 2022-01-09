@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
-{% block body %}
-
+{% block title_body %}
     <div class="container-fluid">
         <div class="row no-gutters justify-content-center">
             <div class="col-12 col-lg-4">
@@ -49,7 +48,6 @@
             </div>
         </div>
     </div>
-
-
-
 {% endblock %}
+{% block sidebar %}{% endblock %}
+{% block body %}{% endblock %}
