@@ -2,24 +2,40 @@
 
 {% block title_body %}
 
-    <form>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+<div class="container-fluid">
+    <div class="row no-gutters justify-content-center">
+        <div class="col-12 col-lg-4">
+            <div class="form-login shadow-lg">
+                <h1 class="h3 mb-3 font-weight-normal text-center">Please register</h1>
+                {{ form_start(form) }}
+                    <div class="mb-0">
+                        <label class="form-label">{{ form_label(form.name) }}</label>
+                        {{ form_errors(form.name, {attr: {class: "alert alert-danger"}}) }}
+                        {{ form_widget(form.name, {attr: {class: 'form-control', autofocus: ''}}) }}
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">{{ form_label(form.email) }}</label>
+                        {{ form_errors(form.email, {attr: {class: "alert alert-danger"}}) }}
+                        {{ form_widget(form.email, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">{{ form_label(form.password.first) }}</label>
+                        {{ form_errors(form.password.first, {attr: {class: "alert alert-danger"}}) }}
+                        {{ form_widget(form.password.first, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">{{ form_label(form.password.second) }}</label>
+                        {{ form_errors(form.password.second, {attr: {class: "alert alert-danger"}}) }}
+                        {{ form_widget(form.password.second, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="d-grid gap-2">
+                        {{ form_widget(form.save, {attr: {class: 'btn btn-primary mt-3'}}) }}
+                    </div>
+                {{ form_end(form) }}
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
-    {{ form(form) }}
+    </div>
+</div>
 
 {% endblock %}
 {% block sidebar %}{% endblock %}
