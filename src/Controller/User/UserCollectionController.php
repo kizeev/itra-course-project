@@ -4,6 +4,8 @@ namespace App\Controller\User;
 
 use App\Entity\UserCollection;
 use App\Form\UserCollectionFormType;
+use App\Repository\UserCollectionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 class UserCollectionController extends AbstractController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private ManagerRegistry $doctrine
+    )
+    {}
+
     #[Route('/user/collection', name: 'user_collection')]
     public function index(UserInterface $user): Response
     {
@@ -19,22 +27,33 @@ class UserCollectionController extends AbstractController
         return $this->render('user/collection.html.twig', [
             'controller_name' => 'UserCollectionController',
             'collections' => $collections,
+            'title' => 'My collections',
+        ]);
+    }
+
+    #[Route('/user/collection/show/{id}', name: 'user_collection_show')]
+    public function show(int $id): Response
+    {
+        $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
+        return $this->render('user/collection.html.twig', [
+            'controller_name' => 'UserCollectionController',
+            'collections' => $collections,
+            'title' => 'My collections',
         ]);
     }
 
     #[Route('/user/collection/create', name: 'user_collection_create')]
-    public function create(ManagerRegistry $doctrine, Request $request, UserInterface $user): Response
+    public function create(Request $request, UserInterface $user): Response
     {
         $collection = new UserCollection();
         $form = $this->createForm(type: UserCollectionFormType::class, data: $collection);
-        $entityManager = $doctrine->getManager();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
             $collection->setUser($user);
-            $entityManager->persist($collection);
-            $entityManager->flush();
+            $this->em->persist($collection);
+            $this->em->flush();
             return $this->redirectToRoute('user_collection');
         }
 
@@ -42,5 +61,33 @@ class UserCollectionController extends AbstractController
         'form' => $form->createView(),
         'title' => 'Create collection',
     ]);
+    }
+
+    #[Route('user/collection/edit/{id}', name: 'user_collection_edit')]
+    public function edit(int $id, Request $request): Response
+    {
+        $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
+        $form = $this->createForm(UserCollectionFormType::class, $collection);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $this->em->flush();
+            return $this->redirectToRoute('user_collection');
+        }
+
+        return $this->render('user/edit_collection.html.twig', parameters: [
+            'title' => 'Edit collection',
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('user/collection/remove/{id}', name: 'user_collection_remove')]
+    public function remove( int $id, Request $request): Response
+    {
+        $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
+        $form = $this->createForm(UserCollectionFormType::class, $collection);
+        $form->handleRequest();
+
     }
 }

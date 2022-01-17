@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title_body %}
+    <div class="container-fluid">
+        <div class="row no-gutters justify-content-center">
+            <div class="col-12 col-lg-4">
+                <div class="form-login shadow-lg">
+                    <h1 class="h3 mb-3 font-weight-normal text-center">Create collection</h1>
+                    {{ form_start(form) }}
+                    <div class="mb-0">
+                        <label class="form-label">{{ form_label(form.name) }}</label>
+                        {{ form_errors(form.name, {attr: {class: "alert alert-danger"}}) }}
+                        {{ form_widget(form.name, {attr: {class: 'form-control', autofocus: ''}}) }}
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">{{ form_label(form.description) }}</label>
+                        {{ form_errors(form.description, {attr: {class: "alert alert-danger"}}) }}
+                        {{ form_widget(form.description, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">{{ form_label(form.image) }}</label>
+                        {{ form_errors(form.image, {attr: {class: "alert alert-danger"}}) }}
+                        {{ form_widget(form.image, {attr: {class: 'form-control'}}) }}
+                    </div>
+                    <div class="d-grid gap-2">
+                        {{ form_widget(form.save, {attr: {class: 'btn btn-primary mt-3'}}) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block body %}{% endblock %}
