@@ -16,7 +16,7 @@ class UserCollectionController extends AbstractController
     public function index(UserInterface $user): Response
     {
         $collections = $user->getUserCollections();
-        return $this->render('user_collection/index.html.twig', [
+        return $this->render('user/collection.html.twig', [
             'controller_name' => 'UserCollectionController',
             'collections' => $collections,
         ]);
@@ -38,8 +38,9 @@ class UserCollectionController extends AbstractController
             return $this->redirectToRoute('user_collection');
         }
 
-        return $this->render('user_collection/create.html.twig', parameters: [
+        return $this->render('user/create_collection.html.twig', parameters: [
         'form' => $form->createView(),
+        'title' => 'Create collection',
     ]);
     }
 }

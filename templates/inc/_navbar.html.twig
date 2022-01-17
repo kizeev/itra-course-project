@@ -7,23 +7,19 @@
             </svg>
             MyCollections
         </a>
-        <form class="search d-flex justify-content-start">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="search d-flex justify-content-start">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
 
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        {% if is_granted('ROLE_ADMIN') %}
             <ul class="navbar-nav mb-2 mb-lg-0 d-flex justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Admin panel
+                        Admin dashboard
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ path('app_admin') }}">Admin</a></li>
@@ -37,12 +33,33 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Logout</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('user_collection_create') }}">
-                        Create Collection
+            </ul>
+        {% elseif is_granted('ROLE_USER') %}
+            <ul class="navbar-nav mb-2 mb-lg-0 d-flex justify-content-end">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ app.user.name }}
                     </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('user') }}">My dashboard</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('user_collection') }}">My Collections</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('user_collection_create') }}">Create Collection</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Something</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Logout</a>
