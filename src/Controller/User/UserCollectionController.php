@@ -4,7 +4,6 @@ namespace App\Controller\User;
 
 use App\Entity\UserCollection;
 use App\Form\UserCollectionFormType;
-use App\Repository\UserCollectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +24,6 @@ class UserCollectionController extends AbstractController
     {
         $collections = $user->getUserCollections();
         return $this->render('user/collection.html.twig', [
-            'controller_name' => 'UserCollectionController',
             'collections' => $collections,
             'title' => 'My collections',
         ]);
@@ -35,10 +33,9 @@ class UserCollectionController extends AbstractController
     public function show(int $id): Response
     {
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
-        return $this->render('user/collection.html.twig', [
-            'controller_name' => 'UserCollectionController',
-            'collections' => $collections,
-            'title' => 'My collections',
+        return $this->render('user/show_collection.html.twig', [
+            'collection' => $collection,
+            'title' => 'My collection: '.$collection->getName(),
         ]);
     }
 
@@ -83,11 +80,11 @@ class UserCollectionController extends AbstractController
     }
 
     #[Route('user/collection/remove/{id}', name: 'user_collection_remove')]
-    public function remove( int $id, Request $request): Response
+    public function remove(int $id)
     {
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
-        $form = $this->createForm(UserCollectionFormType::class, $collection);
-        $form->handleRequest();
-
+        $this->em->remove($collection);
+        $this->em->flush();
+        return $this->redirectToRoute('user_collection');
     }
 }
