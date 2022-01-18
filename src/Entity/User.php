@@ -35,6 +35,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserCollection::class, orphanRemoval: true)]
     private $userCollections;
 
+    #[ORM\Column(type: 'boolean')]
+    private $blocked;
+
     public function __construct()
     {
         $this->userCollections = new ArrayCollection();
@@ -165,6 +168,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $userCollection->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBlocked(): ?bool
+    {
+        return $this->blocked;
+    }
+
+    public function setBlocked(bool $blocked): self
+    {
+        $this->blocked = $blocked;
 
         return $this;
     }

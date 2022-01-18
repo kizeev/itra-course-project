@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin')]
+    #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
         return $this->render('admin/index.html.twig', [
@@ -19,16 +19,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/users', name: 'app_admin_users')]
-    public function getUsers(ManagerRegistry $doctrine): Response
-    {
-        $users = $doctrine->getRepository(User::class)->findAll();
-        return $this->render('admin/users.html.twig', [
-            'title' => 'Users',
-            'users' => $users
-        ]);
-    }
-    #[Route('/admin/collections', name: 'app_admin_collections')]
+    #[Route('/admin/collection', name: 'admin_collection')]
     public function getCollections(ManagerRegistry $doctrine): Response
     {
         $collections = $doctrine->getRepository(UserCollection::class)->findAll();

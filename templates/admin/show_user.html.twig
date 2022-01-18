@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block title_body %}
+    <h3 class="font-weight-normal text-center">{{ title }}</h3>
+{% endblock %}
+
+{% block body %}
+
+    <ul>
+        {% for collection in collections %}
+            <li>{{ collection.name }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
