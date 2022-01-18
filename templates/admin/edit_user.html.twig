@@ -21,12 +21,12 @@
                     <div class="mb-0">
                         <label class="form-label">{{ form_label(form.roles) }}</label>
                         {{ form_errors(form.roles, {attr: {class: "alert alert-danger"}}) }}
-                        {{ form_widget(form.roles[0], {attr: {class: 'form-control'}}) }}
+                        {{ form_widget(form.roles, {attr: {class: 'form-control'}}) }}
                     </div>
                     <div class="mb-0">
                         <label class="form-label">{{ form_label(form.blocked) }}</label>
                         {{ form_errors(form.blocked, {attr: {class: "alert alert-danger"}}) }}
-                        {{ form_widget(form.blocked) }}
+                        {{ form_widget(form.blocked, {attr: {class: "form-control"}}) }}
                     </div>
                     <div class="d-grid gap-2">
                         {{ form_widget(form.save, {attr: {class: 'btn btn-primary mt-3'}}) }}

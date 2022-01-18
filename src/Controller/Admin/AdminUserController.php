@@ -66,4 +66,13 @@ class AdminUserController extends AbstractController
         $this->em->flush();
         return $this->redirectToRoute('admin_user');
     }
+
+    #[Route('admin/user/switch/{id}', name: 'admin_user_switch')]
+    public function switchUser(int $id, Request $request): Response
+    {
+        $user = $this->doctrine->getRepository(User::class)->find($id);
+        $url = $request->getSchemeAndHttpHost();
+        return $this->redirect($url.'/?_switch_user='.$user->getEmail());
+
+    }
 }

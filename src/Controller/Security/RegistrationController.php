@@ -30,7 +30,8 @@ class RegistrationController extends AbstractController
         {
             $hashedPassword = $passwordHasher->hashPassword($user, plainPassword: $user->getPassword());
             $user->setPassword($hashedPassword);
-            $user->setRoles(roles: ['ROLE_USER']);
+            $user->setRoles(roles: []);
+            $user->setBlocked(false);
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute(route: 'home');
