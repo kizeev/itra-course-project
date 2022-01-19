@@ -26,6 +26,10 @@ class UserCollection
     #[ORM\Column(type: 'string', length: 500, nullable: true)]
     private $image;
 
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryCollections')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $category;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +79,18 @@ class UserCollection
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

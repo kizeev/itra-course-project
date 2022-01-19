@@ -18,7 +18,7 @@
             <ul class="navbar-nav mb-2 mb-lg-0 d-flex justify-content-end">
                 <li class="nav-item">
                     <a class="btn btn-outline-warning" aria-current="page" href="{{ path('admin_user', {'_switch_user': '_exit'}) }}">
-                        {{ app.user.name }}: exit impersonation
+                        {{ app.user.name | upper }}: exit impersonation
                     </a>
                 </li>
             </ul>

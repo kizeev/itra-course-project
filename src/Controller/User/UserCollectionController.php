@@ -2,6 +2,7 @@
 
 namespace App\Controller\User;
 
+use App\Entity\Category;
 use App\Entity\UserCollection;
 use App\Form\UserCollectionFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,7 +74,7 @@ class UserCollectionController extends AbstractController
             return $this->redirectToRoute('user_collection');
         }
 
-        return $this->render('user/edit_collection.html.twig', parameters: [
+        return $this->render('user/create_collection.html.twig', parameters: [
             'title' => 'Edit collection',
             'form' => $form->createView(),
         ]);
