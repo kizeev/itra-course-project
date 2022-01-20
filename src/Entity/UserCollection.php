@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserCollectionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserCollectionRepository::class)]
@@ -29,6 +31,14 @@ class UserCollection
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryCollections')]
     #[ORM\JoinColumn(nullable: false)]
     private $category;
+
+    #[ORM\ManyToMany(targetEntity: Attribute::class, inversedBy: 'userCollections', cascade: ['persist'])]
+    private $attribute;
+
+    public function __construct()
+    {
+        $this->attribute = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +101,30 @@ class UserCollection
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Attribute[]
+     */
+    public function getAttribute(): Collection
+    {
+        return $this->attribute;
+    }
+
+    public function addAttribute(Attribute $attribute): self
+    {
+        if (!$this->attribute->contains($attribute)) {
+            $this->attribute[] = $attribute;
+        }
+
+        return $this;
+    }
+
+    public function removeAttribute(Attribute $attribute): self
+    {
+        $this->attribute->removeElement($attribute);
 
         return $this;
     }

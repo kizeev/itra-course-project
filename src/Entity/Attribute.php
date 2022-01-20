@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AttributeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AttributeRepository::class)]
@@ -13,20 +15,72 @@ class Attribute
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 100)]
+    private $field_name;
+
+    #[ORM\ManyToMany(targetEntity: UserCollection::class, mappedBy: 'attribute')]
+    private $userCollections;
+
+    #[ORM\ManyToOne(targetEntity: AttributeType::class, inversedBy: 'attributes')]
+    #[ORM\JoinColumn(nullable: false)]
     private $type;
+
+    public function __construct()
+    {
+        $this->userCollections = new ArrayCollection();
+        $this->type = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getFieldname(): ?string
+    {
+        return $this->field_name;
+    }
+
+    public function setFieldname(string $field_name): self
+    {
+        $this->field_name = $field_name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserCollection[]
+     */
+    public function getUserCollections(): Collection
+    {
+        return $this->userCollections;
+    }
+
+    public function addUserCollection(UserCollection $userCollection): self
+    {
+        if (!$this->userCollections->contains($userCollection)) {
+            $this->userCollections[] = $userCollection;
+            $userCollection->addAttribute($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCollection(UserCollection $userCollection): self
+    {
+        if ($this->userCollections->removeElement($userCollection)) {
+            $userCollection->removeAttribute($this);
+        }
+
+        return $this;
+    }
+
+    public function getType(): ?AttributeType
     {
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(?AttributeType $type): self
     {
         $this->type = $type;
 

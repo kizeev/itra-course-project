@@ -6,7 +6,7 @@ use App\Entity\Category;
 use App\Entity\UserCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -37,6 +37,12 @@ class UserCollectionFormType extends AbstractType
                 'attr' => [
                     'placeholder' => '1',
                 ]
+            ))
+            ->add('attribute', type: CollectionType::class, options: array(
+                'entry_type' => AttributeFormType::class,
+                'entry_options' => ['label' => false],
+                'by_reference' => false,
+                'allow_add' => true,
             ))
             ->add('save', type: SubmitType::class, options: array(
                 'label' => 'Save',

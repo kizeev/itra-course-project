@@ -2,9 +2,12 @@
 
 namespace App\Controller\User;
 
+use App\Entity\Attribute;
+use App\Entity\AttributeType;
 use App\Entity\Category;
 use App\Entity\UserCollection;
 use App\Form\UserCollectionFormType;
+use App\Repository\AttributeTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,6 +47,14 @@ class UserCollectionController extends AbstractController
     public function create(Request $request, UserInterface $user): Response
     {
         $collection = new UserCollection();
+
+        $attribute = new Attribute();
+        $attribute->setFieldname('asd');
+        $attribute->addUserCollection($collection);
+        $type = $this->doctrine->getRepository(AttributeType::class)->find(2);
+        $attribute->setType($type);
+        $collection->addAttribute($attribute);
+
         $form = $this->createForm(type: UserCollectionFormType::class, data: $collection);
         $form->handleRequest($request);
 
