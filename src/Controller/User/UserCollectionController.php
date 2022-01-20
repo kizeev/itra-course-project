@@ -49,9 +49,8 @@ class UserCollectionController extends AbstractController
         $collection = new UserCollection();
 
         $attribute = new Attribute();
-        $attribute->setFieldname('asd');
         $attribute->addUserCollection($collection);
-        $type = $this->doctrine->getRepository(AttributeType::class)->find(2);
+        $type = $this->doctrine->getRepository(AttributeType::class)->find(1);
         $attribute->setType($type);
         $collection->addAttribute($attribute);
 

@@ -18,13 +18,12 @@ class AttributeFormType extends AbstractType
             ->add('field_name', TextType::class, options: array(
                 'label' => 'Enter field name',
             ))
-//            ->add('userCollections')
-//            ->add('type', EntityType::class, options: array(
-//                'label' => 'Select field type',
-//                'class' => AttributeType::class,
-//                'choice_label' => 'type',
-//                'placeholder' => '...'
-//            ))
+            ->add('type', EntityType::class, options: array(
+                'label' => 'Select field type',
+                'class' => AttributeType::class,
+                'choice_label' => 'type',
+                'placeholder' => '...'
+            ))
         ;
     }
 
