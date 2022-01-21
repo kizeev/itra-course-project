@@ -48,12 +48,6 @@ class UserCollectionController extends AbstractController
     {
         $collection = new UserCollection();
 
-        $attribute = new Attribute();
-        $attribute->addUserCollection($collection);
-        $type = $this->doctrine->getRepository(AttributeType::class)->find(1);
-        $attribute->setType($type);
-        $collection->addAttribute($attribute);
-
         $form = $this->createForm(type: UserCollectionFormType::class, data: $collection);
         $form->handleRequest($request);
 

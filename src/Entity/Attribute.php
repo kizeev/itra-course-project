@@ -75,7 +75,7 @@ class Attribute
         return $this;
     }
 
-    public function getType(): ?AttributeType
+    public function getType()
     {
         return $this->type;
     }

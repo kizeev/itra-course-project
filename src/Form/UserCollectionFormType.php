@@ -34,15 +34,14 @@ class UserCollectionFormType extends AbstractType
                 'label' => 'Choose image',
                 'required' => false,
                 'mapped' => false,
-                'attr' => [
-                    'placeholder' => '1',
-                ]
             ))
             ->add('attribute', type: CollectionType::class, options: array(
                 'entry_type' => AttributeFormType::class,
                 'entry_options' => ['label' => false],
                 'by_reference' => false,
                 'allow_add' => true,
+                'allow_delete' => true,
+                'label' => 'Attributes',
             ))
             ->add('save', type: SubmitType::class, options: array(
                 'label' => 'Save',

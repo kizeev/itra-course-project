@@ -22,7 +22,6 @@ class AttributeFormType extends AbstractType
                 'label' => 'Select field type',
                 'class' => AttributeType::class,
                 'choice_label' => 'type',
-                'placeholder' => '...'
             ))
         ;
     }

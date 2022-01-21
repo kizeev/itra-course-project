@@ -1,50 +1,36 @@
 {% extends 'base.html.twig' %}
 {% form_theme form 'bootstrap_5_layout.html.twig' %}
 
+
+
 {% block title_body %}
 
-    {{ form(form) }}
-{#    <div class="container-fluid">#}
-{#        <div class="row no-gutters justify-content-center">#}
-{#            <div class="col-12 col-lg-4">#}
-{#                <div class="form-login shadow-lg">#}
-{#                    <h1 class="h3 mb-3 font-weight-normal text-center">{{ title }}</h1>#}
-{#                    {{ form_start(form) }}#}
-{#                    <div class="mb-0">#}
-{#                        <label class="form-label">{{ form_label(form.category) }}</label>#}
-{#                        {{ form_errors(form.category, {attr: {class: "alert alert-danger"}}) }}#}
-{#                        {{ form_widget(form.category, {attr: {class: 'form-control', autofocus: ''}}) }}#}
-{#                    </div>#}
-{#                    <div class="mb-0">#}
-{#                        <label class="form-label">{{ form_label(form.name) }}</label>#}
-{#                        {{ form_errors(form.name, {attr: {class: "alert alert-danger"}}) }}#}
-{#                        {{ form_widget(form.name, {attr: {class: 'form-control', autofocus: ''}}) }}#}
-{#                    </div>#}
-{#                    <div class="mb-0">#}
-{#                        <label class="form-label">{{ form_label(form.description) }}</label>#}
-{#                        {{ form_errors(form.description, {attr: {class: "alert alert-danger"}}) }}#}
-{#                        {{ form_widget(form.description, {attr: {class: 'form-control'}}) }}#}
-{#                    </div>#}
-{#                    <div class="mb-0">#}
-{#                        <label class="form-label">{{ form_label(form.image) }}</label>#}
-{#                        {{ form_errors(form.image, {attr: {class: "alert alert-danger"}}) }}#}
-{#                        {{ form_widget(form.image, {attr: {class: 'form-control'}}) }}#}
-{#                    </div>#}
-{#                    <div class="mb-0" data-prototype="{{ form_widget(form.attribute.vars.prototype)|e('html_attr') }}">#}
-{#                        {% for row in form.attribute %}#}
-{#                            {{ form_row(row.field_name, {attr: {class: 'form-control'}}) }}#}
-{#                            {{ form_row(row.type, {attr: {class: 'form-control'}}) }}#}
-{#                        {% endfor %}#}
-{#                    </div>#}
-{#                    <div class="d-grid gap-2">#}
-{#                        {{ form_widget(form.save, {attr: {class: 'btn btn-primary mt-3'}}) }}#}
-{#                    </div>#}
-{#                    {{ form_end(form) }}#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
+    {{ form_start(form) }}
+        <h1 class="h3 mb-3 font-weight-normal text-center">{{ title }}</h1>
+        {{ form_row(form.category) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.image) }}
+
+        <ul class="attr" id="attr_ul" data-prototype="{{ form_widget(form.attribute.vars.prototype)|e('html_attr') }}">
+            <button type="button" class="add_item_link" data-collection-holder-class="attr">Add a attribute</button>
+            {% for row in form.attribute %}
+                <li class="attr_li">
+                    {{ form_row(row.field_name) }}
+                    {{ form_row(row.type) }}
+                </li>
+            {% endfor %}
+        </ul>
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
 
 {% endblock %}
 {% block sidebar %}{% endblock %}
 {% block body %}{% endblock %}
+{% block script %}
+    <script>
+        document
+            .querySelectorAll('.add_item_link')
+            .forEach(btn => btn.addEventListener("click", addFormToCollection));
+    </script>
+{% endblock %}
