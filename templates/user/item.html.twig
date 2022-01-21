@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block title_body %}
+    <h3 class="font-weight-normal text-center">{{ title }}</h3>
+{% endblock %}
+
+{% block body %}
+
+        {% for item in items %}
+
+            <ul>
+                <li>
+                    <a href="{{ path('user_item_show', {'id': item.id}) }}">{{ item.name }}</a>
+                </li>
+            </ul>
+
+{#                <div class="card mb-2" style="width: 18rem;">#}
+{#                    <img src="..." class="card-img-top" alt="...">#}
+{#                    <div class="card-body">#}
+{#                        <h5 class="card-title">#}
+{#                            <a href="{{ path('user_collection_show', {'id': collection.id}) }}">{{ collection.name }}</a>#}
+{#                        </h5>#}
+{#                        <p class="card-text">{{ collection.category }}</p>#}
+{#                        <p class="card-text">{{ collection.description }}</p>#}
+{#                        <a href="{{ path('user_collection_edit', {'id': collection.id}) }}" class="btn btn-primary">Edit</a>#}
+{#                        <a href="{{ path('user_collection_remove', {'id': collection.id}) }}" class="btn btn-primary">Remove</a>#}
+{#                    </div>#}
+{#                </div>#}
+        {% endfor %}
+
+{% endblock %}

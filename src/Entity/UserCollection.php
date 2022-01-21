@@ -35,9 +35,13 @@ class UserCollection
     #[ORM\ManyToMany(targetEntity: Attribute::class, inversedBy: 'userCollections', cascade: ['persist'])]
     private $attribute;
 
+    #[ORM\OneToMany(mappedBy: 'userCollection', targetEntity: Item::class, orphanRemoval: true)]
+    private $item;
+
     public function __construct()
     {
         $this->attribute = new ArrayCollection();
+        $this->item = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,6 +129,36 @@ class UserCollection
     public function removeAttribute(Attribute $attribute): self
     {
         $this->attribute->removeElement($attribute);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Item[]
+     */
+    public function getItem(): Collection
+    {
+        return $this->item;
+    }
+
+    public function addItem(Item $item): self
+    {
+        if (!$this->item->contains($item)) {
+            $this->item[] = $item;
+            $item->setUserCollection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): self
+    {
+        if ($this->item->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getUserCollection() === $this) {
+                $item->setUserCollection(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+
+
+{% block title_body %}
+
+    {{ form_start(form) }}
+        <h1 class="h3 mb-3 font-weight-normal text-center">{{ title }}</h1>
+        {{ form_row(form.userCollection) }}
+        {{ form_row(form.name) }}
+
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
+
+{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block body %}{% endblock %}

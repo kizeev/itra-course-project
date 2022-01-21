@@ -25,6 +25,9 @@ class Attribute
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 
+    #[ORM\OneToOne(mappedBy: 'attribute', targetEntity: Value::class, cascade: ['persist', 'remove'])]
+    private $value;
+
     public function __construct()
     {
         $this->userCollections = new ArrayCollection();
@@ -83,6 +86,23 @@ class Attribute
     public function setType(?AttributeType $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getValue(): ?Value
+    {
+        return $this->value;
+    }
+
+    public function setValue(Value $value): self
+    {
+        // set the owning side of the relation if necessary
+        if ($value->getAttribute() !== $this) {
+            $value->setAttribute($this);
+        }
+
+        $this->value = $value;
 
         return $this;
     }

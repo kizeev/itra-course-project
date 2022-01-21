@@ -2,12 +2,8 @@
 
 namespace App\Controller\User;
 
-use App\Entity\Attribute;
-use App\Entity\AttributeType;
-use App\Entity\Category;
 use App\Entity\UserCollection;
 use App\Form\UserCollectionFormType;
-use App\Repository\AttributeTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +22,7 @@ class UserCollectionController extends AbstractController
     #[Route('/user/collection', name: 'user_collection')]
     public function index(UserInterface $user): Response
     {
-        $collections = $user->getUserCollections();
+        $collections = $this->doctrine->getRepository(UserCollection::class)->findBy(array('user' => $user));
         return $this->render('user/collection.html.twig', [
             'collections' => $collections,
             'title' => 'My collections',
