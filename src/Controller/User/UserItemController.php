@@ -45,18 +45,20 @@ class UserItemController extends AbstractController
         ]);
     }
 
-    #[Route('/user/item/create', name: 'user_item_create')]
-    public function create(Request $request, UserInterface $user): Response
+    #[Route('/user/collection/{id}/item/create', name: 'user_item_create')]
+    public function create(Request $request, int $id): Response
     {
         $item = new Item();
+        $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
         $form = $this->createForm(ItemFormType::class, data: $item);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
+            $item->setUserCollection($collection);
             $this->em->persist($item);
             $this->em->flush();
-            return $this->redirectToRoute('user_item');
+            return $this->redirect('/user/collection/'.$id);
         }
 
         return $this->render('user/create_item.html.twig', parameters: [
@@ -75,7 +77,7 @@ class UserItemController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
         {
             $this->em->flush();
-            return $this->redirectToRoute('user_item');
+            return $this->redirect('/user/item/show/'.$id);
         }
 
         return $this->render('user/create_item.html.twig', parameters: [

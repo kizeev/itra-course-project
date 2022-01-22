@@ -2,6 +2,7 @@
 
 namespace App\Controller\User;
 
+use App\Entity\Item;
 use App\Entity\UserCollection;
 use App\Form\UserCollectionFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,13 +30,14 @@ class UserCollectionController extends AbstractController
         ]);
     }
 
-    #[Route('/user/collection/show/{id}', name: 'user_collection_show')]
+    #[Route('/user/collection/{id}', name: 'user_collection_show')]
     public function show(int $id): Response
     {
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
         return $this->render('user/show_collection.html.twig', [
             'collection' => $collection,
             'title' => 'My collection: '.$collection->getName(),
+            'items' => $collection->getItem(),
         ]);
     }
 

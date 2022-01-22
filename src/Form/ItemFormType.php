@@ -21,11 +21,11 @@ class ItemFormType extends AbstractType
                 'label' => 'Enter name',
             ))
 //            ->add('tag')
-            ->add('userCollection', EntityType::class, options: array(
-                'label' => 'Select collection',
-                'class' => UserCollection::class,
-                'choice_label' => 'name',
-            ))
+//            ->add('userCollection', EntityType::class, options: array(
+//                'label' => 'Select collection',
+//                'class' => UserCollection::class,
+//                'choice_label' => 'name',
+//            ))
             ->add('save', type: SubmitType::class, options: array(
                 'label' => 'Save',
             ))

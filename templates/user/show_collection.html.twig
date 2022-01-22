@@ -3,14 +3,20 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block title_body %}
-    <h3 class="font-weight-normal text-center">{{ title }}</h3>
+    <h3 class="font-weight-normal text-center">{{ title }} |
+        <a href="{{ path('user_item_create', {'id': collection.id}) }}">Add item</a>
+    </h3>
+
 {% endblock %}
 
 {% block body %}
 
     <ul>
-        <li>List of Items
-        </li>
+        {% for item in items %}
+            <li>
+                <a href="{{ path('user_item_show', {'id': item.id}) }}">{{ item.name }}</a>
+            </li>
+        {% endfor %}
     </ul>
 
 {% endblock %}
