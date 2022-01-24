@@ -12,6 +12,11 @@
 {% block body %}
 
     <ul>
+        {% for attribute in attributes %}
+            <li>{{ attribute.fieldname }}</li>
+        {% endfor %}
+    </ul>
+    <ul>
         {% for item in items %}
             <li>
                 <a href="{{ path('user_item_show', {'id': item.id}) }}">{{ item.name }}</a>

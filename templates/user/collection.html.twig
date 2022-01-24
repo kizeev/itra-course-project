@@ -3,7 +3,9 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block title_body %}
-    <h3 class="font-weight-normal text-center">{{ title }}</h3>
+    <h3 class="font-weight-normal text-center">{{ title }}
+        <a href="{{ path('user_collection_create') }}">New collection</a>
+    </h3>
 {% endblock %}
 
 {% block body %}

@@ -6,6 +6,7 @@ use App\Repository\ItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 class Item
@@ -25,12 +26,15 @@ class Item
     #[ORM\JoinColumn(nullable: false)]
     private $userCollection;
 
-    #[ORM\OneToMany(mappedBy: 'item', targetEntity: Value::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: Value::class, cascade: ["persist"], orphanRemoval: true)]
     private $item_values;
+
+    private $attributes;
 
     public function __construct()
     {
         $this->item_values = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,4 +107,14 @@ class Item
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAttributes(): ArrayCollection
+    {
+        return $this->attributes;
+    }
+
+
 }

@@ -19,22 +19,19 @@ class AttributeRepository extends ServiceEntityRepository
         parent::__construct($registry, Attribute::class);
     }
 
-    // /**
-    //  * @return Attribute[] Returns an array of Attribute objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+//    /**
+//    * @return Attribute[] Returns an array of Attribute objects
+//    */
+//    public function findByCollection($value)
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('a.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult();
+//    }
 
     /*
     public function findOneBySomeField($value): ?Attribute

@@ -28,7 +28,8 @@ class UserCollectionFormType extends AbstractType
                 'label' => 'Enter collection name',
             ))
             ->add('description', type: TextareaType::class, options: array(
-                'label' => 'Describe your collection'
+                'label' => 'Describe your collection',
+                'required' => false
             ))
             ->add('image', type: FileType::class, options: array(
                 'label' => 'Choose image',

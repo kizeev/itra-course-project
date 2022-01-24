@@ -5,9 +5,28 @@
 
 {% block title_body %}
 
+{#    {{ form(form) }}#}
+
     {{ form_start(form) }}
         <h1 class="h3 mb-3 font-weight-normal text-center">{{ title }}</h1>
         {{ form_row(form.name) }}
+
+{#        <ul class="attr" data-prototype="{{ form_widget(form.item_values.vars.prototype)|e('html_attr') }}">#}
+        <ul>
+            {% for row in form.item_values %}
+                <li>
+                    {{ form_row(row) }}
+                </li>
+            {% endfor %}
+        </ul>
+        <ul>
+            {% for row in form.attributes %}
+                <li>
+                    {{ form_row(row.field_name) }}
+                </li>
+            {% endfor %}
+        </ul>
+
 
     {{ form_row(form.save) }}
     {{ form_end(form) }}

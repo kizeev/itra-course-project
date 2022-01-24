@@ -9,10 +9,15 @@
 {% block body %}
 
     <ul>
+        {% for value in item.itemValues %}
         <li>
-            {{ item.name }} |
-            <a href="{{ path('user_item_edit', {'id': item.id}) }}">Edit</a>
+            {{ value.attribute.getFieldname }}
+            {{ value.value }}
         </li>
+        {% endfor %}
     </ul>
+
+    <a href="{{ path('user_item_edit', {'id': item.id}) }}">Edit</a>
+    <a href="{{ path('user_item_remove', {'id': item.id}) }}">Remove</a>
 
 {% endblock %}

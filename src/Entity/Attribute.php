@@ -25,7 +25,7 @@ class Attribute
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 
-    #[ORM\OneToOne(mappedBy: 'attribute', targetEntity: Value::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'attribute', targetEntity: Value::class, cascade: ['persist', 'remove'])]
     private $value;
 
     public function __construct()

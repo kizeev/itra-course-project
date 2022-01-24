@@ -2,7 +2,6 @@
 
 namespace App\Controller\User;
 
-use App\Entity\Item;
 use App\Entity\UserCollection;
 use App\Form\UserCollectionFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,19 +29,8 @@ class UserCollectionController extends AbstractController
         ]);
     }
 
-    #[Route('/user/collection/{id}', name: 'user_collection_show')]
-    public function show(int $id): Response
-    {
-        $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
-        return $this->render('user/show_collection.html.twig', [
-            'collection' => $collection,
-            'title' => 'My collection: '.$collection->getName(),
-            'items' => $collection->getItem(),
-        ]);
-    }
-
     #[Route('/user/collection/create', name: 'user_collection_create')]
-    public function create(Request $request, UserInterface $user): Response
+    public function create(Request $request, UserInterface $user)
     {
         $collection = new UserCollection();
 
@@ -61,6 +49,19 @@ class UserCollectionController extends AbstractController
         'form' => $form->createView(),
         'title' => 'Create collection',
     ]);
+    }
+
+    #[Route('/user/collection/{id}', name: 'user_collection_show')]
+    public function show(int $id): Response
+    {
+        $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
+        $attributes = $collection->getAttribute();
+        return $this->render('user/show_collection.html.twig', [
+            'collection' => $collection,
+            'title' => 'My collection: '.$collection->getName(),
+            'items' => $collection->getItem(),
+            'attributes' => $attributes,
+        ]);
     }
 
     #[Route('user/collection/edit/{id}', name: 'user_collection_edit')]

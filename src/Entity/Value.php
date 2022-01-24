@@ -20,7 +20,7 @@ class Value
     #[ORM\JoinColumn(nullable: false)]
     private $item;
 
-    #[ORM\OneToOne(inversedBy: 'value', targetEntity: Attribute::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Attribute::class, inversedBy: 'value')]
     #[ORM\JoinColumn(nullable: false)]
     private $attribute;
 
