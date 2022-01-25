@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ValueRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ValueRepository::class)]
@@ -22,7 +23,12 @@ class Value
 
     #[ORM\ManyToOne(targetEntity: Attribute::class, inversedBy: 'value')]
     #[ORM\JoinColumn(nullable: false)]
-    private $attribute;
+    private ?Attribute $attribute;
+
+    public function __construct()
+    {
+        $this->attributes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

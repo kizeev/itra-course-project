@@ -11,6 +11,7 @@ use App\Form\ValueFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,25 +50,25 @@ class UserItemController extends AbstractController
     #[Route('/user/collection/{id}/item/create', name: 'user_item_create')]
     public function create(Request $request, int $id): Response
     {
-        $item = new Item();
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
-        $attributes = $collection->getAttribute();
+        $itemAttr = $collection->getAttribute();
 
-        foreach ($attributes as $attribute) {
+        $item = new Item();
+        $item->setUserCollection($collection);
+
+        foreach ($itemAttr as $attribute) {
             $value = new Value();
-            $value->setValue('');
             $item->getItemValues()->add($value);
             $value->setItem($item);
             $value->setAttribute($attribute);
-            $lab = $value->getAttribute();
         }
 
-        $form = $this->createForm(ItemFormType::class, $item, options: array('attributes' => $attributes));
+        $form = $this->createForm(ItemFormType::class, $item);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $item->setUserCollection($collection);
             $this->em->persist($item);
             $this->em->flush();
             return $this->redirect('/user/collection/'.$id);
@@ -75,7 +76,7 @@ class UserItemController extends AbstractController
 
         return $this->render('user/create_item.html.twig', parameters: [
             'form' => $form->createView(),
-            'title' => 'Create item'
+            'title' => 'Create item',
         ]);
     }
 
@@ -109,13 +110,16 @@ class UserItemController extends AbstractController
         return $this->redirect('/user/collection/'.$collection_id);
     }
 
-    #[Route('user/value/create', name: 'user_value_create')]
-    public function value(Request $request)
+    #[Route('user/value/create/{id}', name: 'user_value_create')]
+    public function value(Request $request, $id)
     {
+
+        $attrib = $this->doctrine->getRepository(Attribute::class)->find($id);
 
         $value = new Value();
 
-        $form = $this->createForm(ValueFormType::class, $value);
+        $form = $this->createForm(ValueFormType::class, $value, ['attrib' => $attrib->getFieldname()]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
