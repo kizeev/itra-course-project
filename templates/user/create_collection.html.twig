@@ -9,9 +9,8 @@
         {{ form_row(form.name) }}
         {{ form_row(form.description) }}
         {{ form_row(form.image) }}
-
         <ul class="attr" id="attr_ul" data-prototype="{{ form_widget(form.attribute.vars.prototype)|e('html_attr') }}">
-            <button type="button" class="add_item_link" data-collection-holder-class="attr">Add a attribute</button>
+            <button type="button" class="add_item_link btn-success" data-collection-holder-class="attr">Add a attribute</button>
             {% for row in form.attribute %}
                 <li class="attr_li">
                     {{ form_row(row.field_name) }}
@@ -21,10 +20,12 @@
         </ul>
     {{ form_row(form.save) }}
     {{ form_end(form) }}
-
 {% endblock %}
+
 {% block sidebar %}{% endblock %}
+
 {% block body %}{% endblock %}
+
 {% block script %}
     <script>
         document

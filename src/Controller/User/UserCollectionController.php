@@ -58,13 +58,13 @@ class UserCollectionController extends AbstractController
         $attributes = $collection->getAttribute();
         return $this->render('user/show_collection.html.twig', [
             'collection' => $collection,
-            'title' => 'My collection: '.$collection->getName(),
+            'title' => $collection->getName(),
             'items' => $collection->getItem(),
             'attributes' => $attributes,
         ]);
     }
 
-    #[Route('user/collection/edit/{id}', name: 'user_collection_edit')]
+    #[Route('user/collection/{id}/edit', name: 'user_collection_edit')]
     public function edit(int $id, Request $request): Response
     {
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
@@ -83,7 +83,7 @@ class UserCollectionController extends AbstractController
         ]);
     }
 
-    #[Route('user/collection/remove/{id}', name: 'user_collection_remove')]
+    #[Route('user/collection/{id}/remove', name: 'user_collection_remove')]
     public function remove(int $id)
     {
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);

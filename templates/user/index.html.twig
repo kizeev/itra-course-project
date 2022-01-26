@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ title }}{% endblock %}
-{% block title_body %}{{ app.user.name }} dashboard{% endblock %}
+
+{% block title_body %}
+    <h4 class="font-weight-normal text-center">{{ app.user.name | upper }} HomePage</h4>
+{% endblock %}
 
 {% block body %}
-
-    Something for user
-
+    <h5 class="font-weight-normal">
+        <a class="dropdown-item" href="{{ path('user_collection') }}">My collections</a>
+    </h5>
+    <h5 class="font-weight-normal">
+        <a class="dropdown-item" href="{{ path('user_item') }}">My items</a>
+    </h5>
 {% endblock %}

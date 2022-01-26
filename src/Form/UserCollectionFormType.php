@@ -42,7 +42,7 @@ class UserCollectionFormType extends AbstractType
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Attributes',
+                'label' => false,
             ))
             ->add('save', type: SubmitType::class, options: array(
                 'label' => 'Save',

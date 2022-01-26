@@ -19,22 +19,71 @@
         <div class="container-fluid mt-2">
             <div class="row">
                 <div class="col-md-3 border">
-                    {% block sidebar %}SideBar{% endblock %}
+                    {% block sidebar %}
+                        {{ include('inc/_sidebar.html.twig') }}
+                    {% endblock %}
                 </div>
                 <div class="col-md-9 border">
                     {% block body %}
-                        <ul>
-                            {% for collection in collections %}
-                                <li>{{ collection.name }} | {{ collection.description }}</li>
-                            {% endfor %}
-                        </ul>
+                        <div class="mb-3">
+                            <h4 class="text-center mb-3">
+                                Recently added items
+                            </h4>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Collection</th>
+                                    <th scope="col">Category</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in items %}
+                                    <tr>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.userCollection.name }}</td>
+                                        <td>{{ item.userCollection.category.name }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <a href="#">show all...</a>
+                        </div><hr>
+                        <div class="mb-3">
+                            <h4 class="text-center mb-3">
+                                The biggest collections
+                            </h4>
+                            <div class="row row-cols-1 row-cols-md-3 g-4">
+                                {% for collection in collections %}
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <img src="..." class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <h6 class="card-title">
+                                                    <a href="{{ path('user_collection_show', {'id': collection.id}) }}">{{ collection.name | upper }}</a>
+                                                </h6>
+                                                <p class="card-text">Category: {{ collection.category }}</p>
+                                                <p class="card-text">{{ collection.description }}</p>
+                                            </div>
+                                            <div class="card-footer text-muted">
+                                                <a href="{{ path('user_collection_edit', {'id': collection.id}) }}" class="btn btn-secondary">Edit</a>
+                                                <a href="{{ path('user_collection_remove', {'id': collection.id}) }}" class="btn btn-secondary">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a href="#">show all...</a>
+                        </div><hr>
+                        <div class="mb-3">
+                            <h4 class="text-center mb-3">
+                                Tag Cloud
+                            </h4>
+                        </div>
                     {% endblock %}
                 </div>
             </div>
         </div>
-
-
-
 
     </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

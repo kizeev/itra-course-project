@@ -12,9 +12,6 @@
 // Нужен jQuery? Установите его с помощью "yarn и jquery", а затем раскомментируйте его для импорта.
 // import $ from 'jquery';
 
-
-
-
 const addFormToCollection = (e) => {
     const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 
@@ -43,7 +40,6 @@ const addFormDeleteLink = (attrFormLi) => {
 
     removeFormButton.addEventListener('click', (e) => {
         e.preventDefault()
-        // удалить li в форме тегов
         attrFormLi.remove();
     });
 }

@@ -11,7 +11,6 @@ use App\Form\ValueFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,17 +32,6 @@ class UserItemController extends AbstractController
         return $this->render('user/item.html.twig', [
             'items' => $items,
             'title' => 'My Items'
-        ]);
-    }
-
-    #[Route('/user/item/show/{id}', name: 'user_item_show')]
-    public function show(int $id): Response
-    {
-        $item = $this->doctrine->getRepository(Item::class)->find($id);
-
-        return $this->render('user/show_item.html.twig', [
-            'item' => $item,
-            'title' => 'My item: '.$item->getName(),
         ]);
     }
 
@@ -84,13 +72,14 @@ class UserItemController extends AbstractController
     public function edit(int $id, Request $request): Response
     {
         $item = $this->doctrine->getRepository(Item::class)->find($id);
+        $collection = $item->getUserCollection();
         $form = $this->createForm(ItemFormType::class, $item);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
             $this->em->flush();
-            return $this->redirect('/user/item/show/'.$id);
+            return $this->redirect('/user/collection/'.$collection->getId());
         }
 
         return $this->render('user/create_item.html.twig', parameters: [
@@ -104,10 +93,9 @@ class UserItemController extends AbstractController
     {
         $item = $this->doctrine->getRepository(Item::class)->find($id);
         $collection = $item->getUserCollection();
-        $collection_id = $collection->getId();
         $this->em->remove($item);
         $this->em->flush();
-        return $this->redirect('/user/collection/'.$collection_id);
+        return $this->redirect('/user/collection/'.$collection->getId());
     }
 
     #[Route('user/value/create/{id}', name: 'user_value_create')]
