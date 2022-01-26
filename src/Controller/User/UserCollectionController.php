@@ -22,7 +22,9 @@ class UserCollectionController extends AbstractController
     #[Route('/user/collection', name: 'user_collection')]
     public function index(UserInterface $user): Response
     {
-        $collections = $this->doctrine->getRepository(UserCollection::class)->findBy(array('user' => $user));
+        $collections = $this->doctrine->getRepository(UserCollection::class)->findBy(
+            array('user' => $user)
+        );
         return $this->render('user/collection.html.twig', [
             'collections' => $collections,
             'title' => 'My collections',

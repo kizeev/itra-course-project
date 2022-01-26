@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Item;
 use App\Entity\UserCollection;
-use App\Repository\ItemRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,16 +19,19 @@ class HomePageController extends AbstractController
     #[Route("/", name: "home")]
     public function welcome(): Response
     {
-        $collections = $this->doctrine->getRepository(UserCollection::class)->findAll();
-        $count = array();
-        foreach ($collections as $collection) {
-            $collection->getItem()->count();
-            $count[$collection->getId()] = $collection->getAttribute()->count();
-        }
+        $collections = $this->doctrine->getRepository(UserCollection::class)
+            ->createQueryBuilder('c')
+            ->select('c, COUNT(item.id) AS HIDDEN cCount')
+            ->join('c.item', 'item')
+            ->groupBy('item.userCollection')
+            ->orderBy('cCount', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult();
 
         $items = $this->doctrine->getRepository(Item::class)->findBy(
             array(),
-            array('id' => 'desc'),
+            array('id' => 'DESC'),
             3
         );
 
