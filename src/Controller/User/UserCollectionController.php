@@ -58,6 +58,8 @@ class UserCollectionController extends AbstractController
     {
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
         $attributes = $collection->getAttribute();
+
+
         return $this->render('user/show_collection.html.twig', [
             'collection' => $collection,
             'title' => $collection->getName(),
@@ -72,6 +74,10 @@ class UserCollectionController extends AbstractController
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
         $form = $this->createForm(UserCollectionFormType::class, $collection);
         $form->handleRequest($request);
+
+        if($collection->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
 
         if ($form->isSubmitted() && $form->isValid())
         {
@@ -89,6 +95,11 @@ class UserCollectionController extends AbstractController
     public function remove(int $id)
     {
         $collection = $this->doctrine->getRepository(UserCollection::class)->find($id);
+
+        if($collection->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $this->em->remove($collection);
         $this->em->flush();
         return $this->redirectToRoute('user_collection');

@@ -26,7 +26,7 @@
         <tbody>
             {% for item in items %}
                 <tr>
-                    <th scope="row">{{ item.name }}</th>
+                    <th scope="row"><a href="{{ path('user_item_show', {'id': item.id}) }}">{{ item.name }}</a></th>
                     {% for value in item.itemValues %}
                         <td>{{ value.value }}</td>
                     {% endfor %}

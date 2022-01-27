@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block title_body %}
+    <h4 class="font-weight-normal text-center">{{ title | upper }}</h4>
+{% endblock %}
+
+{% block body %}
+    <div class="container left-rail-container">
+        <div class="column column-6">
+            {% for value in values %}
+                <p><b>{{ value.attribute.fieldname | title}}:</b> {{ value.value }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

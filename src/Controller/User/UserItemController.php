@@ -51,8 +51,11 @@ class UserItemController extends AbstractController
             $value->setAttribute($attribute);
         }
 
-        $form = $this->createForm(ItemFormType::class, $item);
+        if($collection->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
 
+        $form = $this->createForm(ItemFormType::class, $item);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
@@ -68,13 +71,17 @@ class UserItemController extends AbstractController
         ]);
     }
 
-    #[Route('user/item/edit/{id}', name: 'user_item_edit')]
+    #[Route('user/item/{id}/edit', name: 'user_item_edit')]
     public function edit(int $id, Request $request): Response
     {
         $item = $this->doctrine->getRepository(Item::class)->find($id);
         $collection = $item->getUserCollection();
         $form = $this->createForm(ItemFormType::class, $item);
         $form->handleRequest($request);
+
+        if($collection->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
 
         if ($form->isSubmitted() && $form->isValid())
         {
@@ -88,11 +95,16 @@ class UserItemController extends AbstractController
         ]);
     }
 
-    #[Route('user/item/remove/{id}', name: 'user_item_remove')]
+    #[Route('user/item/{id}/remove', name: 'user_item_remove')]
     public function remove(int $id)
     {
         $item = $this->doctrine->getRepository(Item::class)->find($id);
         $collection = $item->getUserCollection();
+
+        if($collection->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $this->em->remove($item);
         $this->em->flush();
         return $this->redirect('/user/collection/'.$collection->getId());
@@ -120,6 +132,19 @@ class UserItemController extends AbstractController
         return $this->render('user/create_value.html.twig', parameters: [
             'title' => 'Value',
             'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('user/item/{id}/show', name: 'user_item_show')]
+    public function show(int $id): Response
+    {
+        $item = $this->doctrine->getRepository(Item::class)->find($id);
+        $values = $item->getItemValues();
+
+        return $this->render('user/show_item.html.twig', [
+            'title' => $item->getName(),
+            'values' => $values,
+            'item' => $item
         ]);
     }
 }

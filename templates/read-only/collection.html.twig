@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block title_body %}
+    <h4 class="font-weight-normal text-center">{{ title }}</h4>
+{% endblock %}
+
+{% block body %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for collection in collections %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <a href="{{ path('collection_show', {'id': collection.id}) }}">{{ collection.name | upper }}</a>
+                        </h6>
+                        <p class="card-text">Category: {{ collection.category }}</p>
+                        <p class="card-text">{{ collection.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
