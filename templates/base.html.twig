@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{{ title }}{% endblock %}</title>
@@ -71,8 +71,13 @@
                         </div><hr>
                         <div class="mb-3">
                             <h4 class="text-center mb-3">
-                                Tag Cloud
+                                Tags
                             </h4>
+                            <div>
+                                {% for tag in tags %}
+                                    <a href="{{ path('tag', {'id': tag.id}) }}">{{ tag.name }}</a>
+                                {% endfor %}
+                            </div>
                         </div>
                     {% endblock %}
                 </div>

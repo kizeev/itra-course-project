@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Item;
+use App\Entity\Tag;
 use App\Entity\UserCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,11 +36,14 @@ class HomePageController extends AbstractController
             3
         );
 
+        $tags = $this->doctrine->getRepository(Tag::class)->findAll();
+
         return $this->render("base.html.twig", [
             "title" => "HomePage",
             "title_body" => "All Collections",
             "collections" => $collections,
-            'items' => $items
+            'items' => $items,
+            'tags' => $tags
         ]);
     }
 
@@ -72,11 +76,13 @@ class HomePageController extends AbstractController
     {
         $item = $this->doctrine->getRepository(Item::class)->find($id);
         $values = $item->getItemValues();
+        $tags = $item->getTags();
 
         return $this->render('read-only/show_item.html.twig', [
             'title' => $item->getName(),
             'values' => $values,
-            'item' => $item
+            'item' => $item,
+            'tags' => $tags
         ]);
     }
 
@@ -88,6 +94,18 @@ class HomePageController extends AbstractController
         return $this->render('read-only/item.html.twig', [
             'title' => 'All Items',
             'title_body' => 'All Items',
+            'items' => $items
+        ]);
+    }
+
+    #[Route('tag/{id}', name: 'tag')]
+    public function snowItemsByTag(int $id): Response
+    {
+        $tag = $this->doctrine->getRepository(Tag::class)->findOneBy(['id' => $id]);
+        $items = $tag->getItem();
+
+        return $this->render('read-only/item.html.twig', [
+            'title' => 'Items by tag',
             'items' => $items
         ]);
     }

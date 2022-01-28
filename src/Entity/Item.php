@@ -19,9 +19,6 @@ class Item
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $tag;
-
     #[ORM\ManyToOne(targetEntity: UserCollection::class, inversedBy: 'item')]
     #[ORM\JoinColumn(nullable: false)]
     private $userCollection;
@@ -31,10 +28,14 @@ class Item
 
     private $attributes;
 
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'item', cascade: ['persist'])]
+    private $tags;
+
     public function __construct()
     {
         $this->item_values = new ArrayCollection();
         $this->attributes = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -50,18 +51,6 @@ class Item
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getTag(): ?string
-    {
-        return $this->tag;
-    }
-
-    public function setTag(?string $tag): self
-    {
-        $this->tag = $tag;
 
         return $this;
     }
@@ -116,5 +105,30 @@ class Item
         return $this->attributes;
     }
 
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
 
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+//            $tag->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeItem($this);
+        }
+
+        return $this;
+    }
 }

@@ -12,6 +12,11 @@
             {% for value in values %}
                 <p><b>{{ value.attribute.fieldname | title}}:</b> {{ value.value }}</p>
             {% endfor %}
+            <div>
+                {% for tag in tags %}
+                    <a href="{{ path('tag', {'id': tag.id}) }}">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

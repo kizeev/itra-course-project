@@ -30,11 +30,10 @@ const addFormToCollection = (e) => {
     collectionHolder.dataset.index++;
 };
 
-
 const addFormDeleteLink = (attrFormLi) => {
     const removeFormButton = document.createElement('button')
     removeFormButton.classList
-    removeFormButton.innerText = 'Delete this attribute'
+    removeFormButton.innerText = 'Delete'
 
     attrFormLi.append(removeFormButton);
 
@@ -48,3 +47,4 @@ const attributes = document.querySelectorAll('li.attr_li')
 attributes.forEach((tag) => {
     addFormDeleteLink(tag)
 })
+

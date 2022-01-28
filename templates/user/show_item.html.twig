@@ -12,8 +12,13 @@
             {% for value in values %}
                 <p><b>{{ value.attribute.fieldname | title}}:</b> {{ value.value }}</p>
             {% endfor %}
-            <a class="btn btn-secondary" href="{{ path('user_item_edit', {'id': item.id}) }}">Edit</a>
-            <a class="btn btn-danger" href="{{ path('user_item_remove', {'id': item.id}) }}">Remove</a>
+            <div>
+                {% for tag in tags %}
+                    <a href="{{ path('tag', {'id': tag.id}) }}">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            <a class="btn btn-secondary mt-3" href="{{ path('user_item_edit', {'id': item.id}) }}">Edit</a>
+            <a class="btn btn-danger mt-3" href="{{ path('user_item_remove', {'id': item.id}) }}">Remove</a>
         </div>
     </div>
 {% endblock %}

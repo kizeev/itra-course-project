@@ -4,6 +4,7 @@ namespace App\Controller\User;
 
 use App\Entity\Attribute;
 use App\Entity\Item;
+use App\Entity\Tag;
 use App\Entity\UserCollection;
 use App\Entity\Value;
 use App\Form\ItemFormType;
@@ -67,7 +68,7 @@ class UserItemController extends AbstractController
 
         return $this->render('user/create_item.html.twig', parameters: [
             'form' => $form->createView(),
-            'title' => 'Create item',
+            'title' => $collection->getName().': create item',
         ]);
     }
 
@@ -140,11 +141,25 @@ class UserItemController extends AbstractController
     {
         $item = $this->doctrine->getRepository(Item::class)->find($id);
         $values = $item->getItemValues();
+        $tags = $item->getTags();
 
         return $this->render('user/show_item.html.twig', [
             'title' => $item->getName(),
             'values' => $values,
-            'item' => $item
+            'item' => $item,
+            'tags' => $tags
         ]);
     }
+
+//    #[Route('tag/{id}', name: 'tag')]
+//    public function snowItemsByTag(int $id): Response
+//    {
+//        $tag = $this->doctrine->getRepository(Tag::class)->findOneBy(['id' => $id]);
+//        $items = $tag->getItem();
+//
+//        return $this->render('user/item.html.twig', [
+//            'title' => 'Items by tag',
+//            'items' => $items
+//        ]);
+//    }
 }
