@@ -150,16 +150,4 @@ class UserItemController extends AbstractController
             'tags' => $tags
         ]);
     }
-
-//    #[Route('tag/{id}', name: 'tag')]
-//    public function snowItemsByTag(int $id): Response
-//    {
-//        $tag = $this->doctrine->getRepository(Tag::class)->findOneBy(['id' => $id]);
-//        $items = $tag->getItem();
-//
-//        return $this->render('user/item.html.twig', [
-//            'title' => 'Items by tag',
-//            'items' => $items
-//        ]);
-//    }
 }

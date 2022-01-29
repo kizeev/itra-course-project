@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\ManagerRegistry;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
+#[ORM\Index(columns: ['name'])]
 class Item
 {
     #[ORM\Id]
@@ -31,11 +32,15 @@ class Item
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'item', cascade: ['persist'])]
     private $tags;
 
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: Comment::class, orphanRemoval: true)]
+    private $comments;
+
     public function __construct()
     {
         $this->item_values = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +132,36 @@ class Item
     {
         if ($this->tags->removeElement($tag)) {
             $tag->removeItem($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getItem() === $this) {
+                $comment->setItem(null);
+            }
         }
 
         return $this;

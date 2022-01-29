@@ -2,18 +2,26 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Item;
 use App\Entity\Tag;
 use App\Entity\UserCollection;
+use App\Form\CommentFormType;
+use App\Repository\ItemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 class HomePageController extends AbstractController
 {
     public function __construct(
-        private ManagerRegistry $doctrine
+        private ManagerRegistry $doctrine,
+        private EntityManagerInterface $em
     )
     {}
 
@@ -72,17 +80,36 @@ class HomePageController extends AbstractController
     }
 
     #[Route('item/{id}/show', name: 'item_show')]
-    public function showItem(int $id): Response
+    public function showItem(int $id, Request $request): Response
     {
         $item = $this->doctrine->getRepository(Item::class)->find($id);
         $values = $item->getItemValues();
         $tags = $item->getTags();
+        $addedComments = $item->getComments();
+
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setItem($item);
+            $date = new \DateTime();
+            $comment->setCreatedAt($date);
+            $user = $this->getUser();
+            $comment->setUser($user);
+            $this->em->persist($comment);
+            $this->em->flush();
+            $form->createView();
+            return $this->redirect($request->getUri());
+        }
 
         return $this->render('read-only/show_item.html.twig', [
             'title' => $item->getName(),
             'values' => $values,
             'item' => $item,
-            'tags' => $tags
+            'tags' => $tags,
+            'addedComments' => $addedComments,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -106,6 +133,23 @@ class HomePageController extends AbstractController
 
         return $this->render('read-only/item.html.twig', [
             'title' => 'Items by tag',
+            'items' => $items
+        ]);
+    }
+
+    #[Route('/search', name: 'search')]
+    public function search(Request $request): Response
+    {
+        $query = $request->query->get('s');
+        $items = $this->doctrine->getRepository(Item::class)
+            ->createQueryBuilder('i')
+            ->andWhere('i.name = :val')
+            ->setParameter('val', $query)
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('read-only/item.html.twig', [
+            'title' => "Searched Items",
             'items' => $items
         ]);
     }

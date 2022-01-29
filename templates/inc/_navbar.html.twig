@@ -8,8 +8,8 @@
             MyCollections
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="search d-flex justify-content-start">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="search d-flex justify-content-start" action="{{ path('search') }}" method="get">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="s">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
