@@ -42,6 +42,9 @@ class UserCollectionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
         {
             $collection->setUser($user);
+            $collection->setImageName($request->get('image_name'));
+            $collection->setImageFile($request->files->get('imageFile'));
+
             $this->em->persist($collection);
             $this->em->flush();
             return $this->redirectToRoute('user_collection');
