@@ -13,24 +13,24 @@
             <th scope="col">Name</th>
             <th scope="col">Collection</th>
             <th scope="col">Category</th>
-            </tr>
+        </tr>
         </thead>
         <tbody>
-            {% for item in items %}
-                <tr>
-                    <td><a href="{{ path('item_show', {'id': item.id}) }}">{{ item.name }}</td>
-                    <td>{{ item.userCollection.name }}</td>
-                    <td>{{ item.userCollection.category.name }}</td>
-                </tr>
-            {% endfor %}
+        {% for item in items %}
+            <tr>
+                <td><a href="{{ path('item_show', {'id': item.id}) }}">{{ item.name }}</td>
+                <td>{{ item.userCollection.name }}</td>
+                <td>{{ item.userCollection.category.name }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}
 
 {% block script %}
     <script>
-        $(document).ready( function () {
+        $(document).ready(function () {
             $('#item-table').DataTable();
-        } );
+        });
     </script>
 {% endblock %}

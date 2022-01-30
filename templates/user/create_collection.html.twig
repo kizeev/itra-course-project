@@ -4,20 +4,21 @@
 {% block title_body %}
 
     {{ form_start(form) }}
-        <h1 class="h3 mb-3 font-weight-normal text-center">{{ title }}</h1>
-        {{ form_row(form.category) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.description) }}
-        {{ form_row(form.imageFile) }}
-        <ul class="attr" id="attr_ul" data-prototype="{{ form_widget(form.attribute.vars.prototype)|e('html_attr') }}">
-            <button type="button" class="add_item_link btn-success" data-collection-holder-class="attr">Add a attribute</button>
-            {% for row in form.attribute %}
-                <li class="attr_li">
-                    {{ form_row(row.field_name) }}
-                    {{ form_row(row.type) }}
-                </li>
-            {% endfor %}
-        </ul>
+    <h1 class="h3 mb-3 font-weight-normal text-center">{{ title }}</h1>
+    {{ form_row(form.category) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.imageFile) }}
+    <ul class="attr" id="attr_ul" data-prototype="{{ form_widget(form.attribute.vars.prototype)|e('html_attr') }}">
+        <button type="button" class="add_item_link btn-success" data-collection-holder-class="attr">Add a attribute
+        </button>
+        {% for row in form.attribute %}
+            <li class="attr_li">
+                {{ form_row(row.field_name) }}
+                {{ form_row(row.type) }}
+            </li>
+        {% endfor %}
+    </ul>
     {{ form_row(form.save) }}
     {{ form_end(form) }}
 {% endblock %}

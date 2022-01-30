@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use App\Form\AdminUserFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ class AdminUserController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private \Doctrine\Persistence\ManagerRegistry $doctrine
+        private ManagerRegistry $doctrine
     )
     {}
 
@@ -27,17 +27,6 @@ class AdminUserController extends AbstractController
             'title' => 'Users',
             'users' => $users,
         ]);
-    }
-
-    #[Route('admin/user/show/{id}', name: 'admin_user_show')]
-    public function show(int $id, Request $request): Response
-    {
-        $user = $this->doctrine->getRepository(User::class)->find($id);
-        return $this->render('admin/show_user.html.twig', [
-            'user' => $user,
-            'title' => $user->getName().' collections',
-            'collections' => $user->getUserCollections(),
-            ]);
     }
 
     #[Route('admin/user/edit/{id}', name: 'admin_user_edit')]

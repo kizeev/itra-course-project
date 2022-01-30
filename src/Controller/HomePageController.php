@@ -7,7 +7,6 @@ use App\Entity\Item;
 use App\Entity\Tag;
 use App\Entity\UserCollection;
 use App\Form\CommentFormType;
-use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

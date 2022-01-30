@@ -4,7 +4,6 @@ namespace App\Controller\User;
 
 use App\Entity\Attribute;
 use App\Entity\Item;
-use App\Entity\Tag;
 use App\Entity\UserCollection;
 use App\Entity\Value;
 use App\Form\ItemFormType;

@@ -11,20 +11,20 @@
         <thead>
         <tr>
             <th scope="col">Name</th>
-            {%  for attribute in  attributes %}
+            {% for attribute in  attributes %}
                 <th scope="col">{{ attribute.fieldname | capitalize }}</th>
             {% endfor %}
         </tr>
         </thead>
         <tbody>
-            {% for item in items %}
-                <tr>
-                    <th scope="row"><a href="{{ path('item_show', {'id': item.id}) }}">{{ item.name }}</th>
-                    {% for value in item.itemValues %}
-                        <td>{{ value.value }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
+        {% for item in items %}
+            <tr>
+                <th scope="row"><a href="{{ path('item_show', {'id': item.id}) }}">{{ item.name }}</th>
+                {% for value in item.itemValues %}
+                    <td>{{ value.value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}

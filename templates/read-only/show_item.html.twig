@@ -14,7 +14,7 @@
             <p><b>Category: </b>{{ item.userCollection.category.name | title }}</p>
             <p><b>Collection: </b>{{ item.userCollection.name | title }}</p>
             {% for value in values %}
-                <p><b>{{ value.attribute.fieldname | title}}:</b> {{ value.value }}</p>
+                <p><b>{{ value.attribute.fieldname | title }}:</b> {{ value.value }}</p>
             {% endfor %}
             <div>
                 {% for tag in tags %}
@@ -24,7 +24,7 @@
             <hr>
             <div>
                 <h5>Comments</h5>
-                    <ul>
+                <ul>
                     {% for comment in addedComments %}
                         <li>
                             <p>{{ comment.item.userCollection.user.name }}</p>
@@ -32,7 +32,7 @@
                             <p>{{ comment.createdAt | date }}</p>
                         </li>
                     {% endfor %}
-                    </ul>
+                </ul>
                 {% if is_granted('ROLE_USER') %}
                     {{ form(form) }}
                 {% else %}
